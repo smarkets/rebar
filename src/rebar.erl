@@ -98,7 +98,7 @@ run_aux(Commands) ->
     %% Keep track of how many operations we do, so we can detect bad commands
     erlang:put(operations, 0),
 
-    %% If exists $HOME/.rebar/config load and use as parent config
+    %% If $HOME/.rebar/config exists load and use as global config
     GlobalConfigFile = filename:join(os:getenv("HOME"), ".rebar/config"),
     GlobalConfig = case filelib:is_regular(GlobalConfigFile) of
                        true ->
