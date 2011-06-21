@@ -102,7 +102,7 @@ run_aux(Commands) ->
     GlobalConfigFile = filename:join(os:getenv("HOME"), ".rebar/config"),
     GlobalConfig = case filelib:is_regular(GlobalConfigFile) of
                        true ->
-                           ?DEBUG("Load global parent config: ~p~n",
+                           ?DEBUG("Load global config file ~p~n",
                                   [GlobalConfigFile]),
                            OldCwd = rebar_utils:get_cwd(),
                            BaseConfig = rebar_config:new(),
