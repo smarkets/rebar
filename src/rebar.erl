@@ -98,8 +98,26 @@ run_aux(Commands) ->
     %% Keep track of how many operations we do, so we can detect bad commands
     erlang:put(operations, 0),
 
+    %% If exists $HOME/.rebar/config load and use as parent config
+    GlobalConfigFile = filename:join(os:getenv("HOME"), ".rebar/config"),
+    GlobalConfig = case filelib:is_regular(GlobalConfigFile) of
+                       true ->
+                           ?DEBUG("Load global parent config: ~p~n",
+                                  [GlobalConfigFile]),
+                           OldCwd = rebar_utils:get_cwd(),
+                           BaseConfig = rebar_config:new(),
+                           rebar_config:set_global(config, GlobalConfigFile),
+                           ok = file:set_cwd(filename:join(os:getenv("HOME"),
+                                                           ".rebar")),
+                           Config = rebar_config:new(BaseConfig),
+                           ok = file:set_cwd(OldCwd),
+                           Config;
+                       false ->
+                           rebar_config:new()
+                   end,
+
     %% Process each command, resetting any state between each one
-    rebar_core:process_commands(CommandAtoms).
+    rebar_core:process_commands(CommandAtoms, GlobalConfig).
 
 %%
 %% print help/usage string

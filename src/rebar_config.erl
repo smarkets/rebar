@@ -66,6 +66,7 @@ new(ParentConfig) ->
     %% Load terms from rebar.config, if it exists
     Dir = rebar_utils:get_cwd(),
     ConfigFile = filename:join([Dir, ConfName]),
+    ?DEBUG("Consult config file ~p~n", [ConfigFile]),
     Opts = case file:consult(ConfigFile) of
                {ok, Terms} ->
                    %% Found a config file with some terms. We need to
