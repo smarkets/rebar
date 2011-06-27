@@ -52,7 +52,16 @@ new() ->
     #config { dir = rebar_utils:get_cwd(),
               opts = []}.
 
-new(ParentConfig) ->
+new(ConfigFile) when is_list(ConfigFile) ->
+    ?DEBUG("Consult config file ~p~n", [ConfigFile]),
+    case file:consult(ConfigFile) of
+        {ok, Opts} ->
+            #config { dir = rebar_utils:get_cwd(),
+                      opts = Opts };
+        Other ->
+            ?ABORT("Failed to load ~s: ~p~n", [ConfigFile, Other])
+    end;
+new(#config{}=ParentConfig)->
     %% If we are at the top level we might want to load another rebar.config
     %% We can be certain that we are at the top level if we don't have any
     %% configs yet since if we are at another level we must have some config.

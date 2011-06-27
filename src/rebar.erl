@@ -104,14 +104,7 @@ run_aux(Commands) ->
                        true ->
                            ?DEBUG("Load global config file ~p~n",
                                   [GlobalConfigFile]),
-                           OldCwd = rebar_utils:get_cwd(),
-                           BaseConfig = rebar_config:new(),
-                           rebar_config:set_global(config, GlobalConfigFile),
-                           ok = file:set_cwd(filename:join(os:getenv("HOME"),
-                                                           ".rebar")),
-                           Config = rebar_config:new(BaseConfig),
-                           ok = file:set_cwd(OldCwd),
-                           Config;
+                           rebar_config:new(GlobalConfigFile);
                        false ->
                            rebar_config:new()
                    end,
