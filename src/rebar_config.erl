@@ -53,8 +53,7 @@ new() ->
               opts = []}.
 
 new(ConfigFile) when is_list(ConfigFile) ->
-    ?DEBUG("Consult config file ~p~n", [ConfigFile]),
-    case file:consult(ConfigFile) of
+    case consult_file(ConfigFile) of
         {ok, Opts} ->
             #config { dir = rebar_utils:get_cwd(),
                       opts = Opts };
@@ -75,8 +74,7 @@ new(#config{}=ParentConfig)->
     %% Load terms from rebar.config, if it exists
     Dir = rebar_utils:get_cwd(),
     ConfigFile = filename:join([Dir, ConfName]),
-    ?DEBUG("Consult config file ~p~n", [ConfigFile]),
-    Opts = case file:consult(ConfigFile) of
+    Opts = case consult_file(ConfigFile) of
                {ok, Terms} ->
                    %% Found a config file with some terms. We need to
                    %% be able to distinguish between local definitions
@@ -135,6 +133,10 @@ get_jobs() ->
 %% ===================================================================
 %% Internal functions
 %% ===================================================================
+
+consult_file(File) ->
+    ?DEBUG("Consult config file ~p~n", [ConfigFile]),
+    file:consult(ConfigFile).
 
 local_opts([], Acc) ->
     lists:reverse(Acc);
