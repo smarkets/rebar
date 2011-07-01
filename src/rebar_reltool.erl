@@ -218,9 +218,12 @@ run_reltool(Server, _Config, ReltoolConfig) ->
                            [Reason])
             end,
 
+            {_RelName, RelVsn} = rebar_rel_utils:get_reltool_release_info(ReltoolConfig),
+
             %% Initialize overlay vars with some basics
             %% (that can get overwritten)
             OverlayVars0 = dict:from_list([{erts_vsn, "erts-" ++ erlang:system_info(version)},
+                                           {rel_vsn, RelVsn},
                                            {target_dir, TargetDir}]),
 
             %% Load up any variables specified by overlay_vars
