@@ -82,13 +82,13 @@ run_checks(OldVerPath, ReltoolConfig) ->
 
     {Name, Ver} = rebar_rel_utils:get_reltool_release_info(ReltoolConfig),
 
-    NewVsnPath = filename:join([
+    NewVerPath = filename:join([
                       rebar_rel_utils:get_target_parent_dir(ReltoolConfig),
                       Name]),
-    true = rebar_utils:prop_check(filelib:is_dir(NewVsnPath),
-                      "Release directory doesn't exist (~p)~n", [NewVsnPath]),
+    true = rebar_utils:prop_check(filelib:is_dir(NewVerPath),
+                      "Release directory doesn't exist (~p)~n", [NewVerPath]),
 
-    {NewName, NewVer} = rebar_rel_utils:get_rel_release_info(Name, NewVsnPath),
+    {NewName, NewVer} = rebar_rel_utils:get_rel_release_info(Name, NewVerPath),
     {OldName, OldVer} = rebar_rel_utils:get_rel_release_info(Name, OldVerPath),
 
     true = rebar_utils:prop_check(NewName == OldName,
@@ -100,7 +100,7 @@ run_checks(OldVerPath, ReltoolConfig) ->
     true = rebar_utils:prop_check(Ver == NewVer,
                       "Reltool and .rel versions do not match~n", []),
 
-    {NewVsnPath, NewName, NewVer}.
+    {NewVerPath, NewName, NewVer}.
 
 setup(OldVerPath, NewVerPath, NewName, NewVer, NameVer) ->
     Src = filename:join([NewVerPath, "releases",
